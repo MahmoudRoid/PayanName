@@ -5,11 +5,8 @@ import android.os.Environment;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
-import ir.mahmoud.payanname.Model.Model;
 
 /**
  * Created by mahmoud on 3/2/18.

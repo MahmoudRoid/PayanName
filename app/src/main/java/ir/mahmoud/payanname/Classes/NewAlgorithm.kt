@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import io.realm.Realm
-import io.realm.RealmModel
 import ir.mahmoud.payanname.Model.Model
 import java.io.*
 import java.util.*
@@ -14,34 +13,22 @@ class NewAlgorithm {
     var normalStatus = true
     var isOk: Boolean = false
 
-    fun start(coreNumber: Int = 0 , frequency: String){
-        if (coreNumber == 0){
-            // no need to check core is on or not
-            setCurrentFreq(coreNumber, frequency)
-        }
-        else{
-            //check core is on or not
-            if (isCoreOnline(coreNumber)){
-                // set core off
-                setCore(coreNumber,false)
-            }
-            else{
-                //TODO check for governor
-                // set core on
-                setCore(coreNumber,true)
-                // set freq
-                setCurrentFreq(coreNumber, frequency)
-            }
-        }
+   init{
+        // set governor for core 0
+        setGovernor_Core_0()
     }
 
+    //////////////////////////////////////////////
 
-
+    fun setGovernor_Core_0(){
+        val governor = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor"
+        Runtime.getRuntime().exec(arrayOf("su", "-c", "echo userspace> $governor "))
+    }
     fun setPermissions(coreNumber: Int) {
         var process: Process
-        val path_1 = "/sys/devices/system/cpu/cpu" + coreNumber.toString() + "/cpufreq/scaling_min_freq"
-        val path_2 = "/sys/devices/system/cpu/cpu" + coreNumber.toString() + "/cpufreq/scaling_max_freq"
-        val path_3 = "/sys/devices/system/cpu/cpu" + coreNumber.toString() + "/cpufreq/scaling_setspeed"
+        val path_1 = "/sys/devices/system/cpu/cpu$coreNumber/cpufreq/scaling_min_freq"
+        val path_2 = "/sys/devices/system/cpu/cpu$coreNumber/cpufreq/scaling_max_freq"
+        val path_3 = "/sys/devices/system/cpu/cpu$coreNumber/cpufreq/scaling_setspeed"
         try {
             process = Runtime.getRuntime().exec(arrayOf("su", "-c", "chmod 777 $path_1 $path_2 $path_3"))
             val s = Scanner(process.errorStream).useDelimiter("\\A")
@@ -84,7 +71,7 @@ class NewAlgorithm {
     fun isCoreOnline(core: Int): Boolean {
         var online = "0"
         try {
-            val reader = RandomAccessFile("/sys/devices/system/cpu/cpu" + core.toString() + "/online", "r")
+            val reader = RandomAccessFile("/sys/devices/system/cpu/cpu$core/online", "r")
 
             var done = false
             while (!done) {
@@ -110,7 +97,7 @@ class NewAlgorithm {
         var cpuUasge = -1
         var temperuture = Constants.getInstance().min_temp
 
-        temperuture = java.lang.Double.parseDouble(JavaUtils.getInstance().cpuTemperature_huawei)
+        temperuture = java.lang.Double.parseDouble(JavaUtils.getInstance().cpuTemperature_Xperia)
         cpuUasge = JavaUtils.getInstance().cpuUsage
 
         if (temperuture > Constants.getInstance().max_threshold_temp || !normalStatus) {
@@ -238,11 +225,11 @@ class NewAlgorithm {
 
     }
 
-    fun checkHistory(newFreq: String, newCores: Int): Boolean {
+    private fun checkHistory(newFreq: String, newCores: Int): Boolean {
         // newCore  =>  0 means core0
         //          =>  1 means core0 & core1
-        //          =>  2 means core0 & core1 $ core2
-        //          =>  3 means core0 & core1 $ core2  core3
+        //          =>  2 means core0 & core1 & core2
+        //          =>  3 means core0 & core1 & core2 & core3
         isOk = false
         val myRealm = Realm.getDefaultInstance()
         myRealm.executeTransactionAsync { realm ->
@@ -306,6 +293,20 @@ class NewAlgorithm {
             3 -> if (maxTemperature < Constants.getInstance().temp_level_4) return true
         }
         return false
+    }
+
+    fun xxx(context: Context) {
+
+//        var list : MutableList<Model>
+        val myRealm = Realm.getDefaultInstance()
+        myRealm.executeTransaction { realm ->
+            val result = realm.where(Model::class.java).findAll()
+            val list = realm.copyFromRealm(result)
+            Toast.makeText(context , list[0].cpuTemperature.toString() , Toast.LENGTH_SHORT).show()
+        }
+
+
+
     }
 
 

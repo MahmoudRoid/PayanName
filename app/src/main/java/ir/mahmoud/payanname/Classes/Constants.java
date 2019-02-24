@@ -23,7 +23,7 @@ public class Constants {
     public double temp_level_4 = 100;
 
     // frequencies
-    public String[] frequencies = {"104000","1196000","1300000"};
+    public String[] frequencies = {"1026000","1134000","1242000","1350000","1458000","1512000"};
     // cpu usages
     public int cpu_usage_1 = 3;
     public int cpu_usage_2 = 7;

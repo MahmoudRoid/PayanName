@@ -7,10 +7,12 @@ import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.WindowManager
+import android.widget.Toast
+import io.realm.Realm
 import ir.mahmoud.payanname.Classes.JavaUtils
 import ir.mahmoud.payanname.Classes.NewAlgorithm
 import ir.mahmoud.payanname.Enum.Language
+import ir.mahmoud.payanname.Model.Model
 import ir.mahmoud.payanname.R
 import ir.mahmoud.payanname.Service.AlgorithmService
 import ir.mahmoud.payanname.Service.CollectDataService
@@ -102,14 +104,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         //////  test cores
-        btn_core_0.setOnClickListener { test.start(0,counter_edt.text.toString()) }
-        btn_core_1.setOnClickListener { test.start(1,counter_edt.text.toString()) }
-        btn_core_2.setOnClickListener { test.start(2,counter_edt.text.toString()) }
-        btn_core_3.setOnClickListener {
-//            test.start(3,counter_edt.text.toString())
-            test.getCpuUtilizationWithCpuFreq(this)
-        }
-
+        btn_core_0.setOnClickListener { }
+        btn_core_1.setOnClickListener { }
+        btn_core_2.setOnClickListener { }
+        btn_core_3.setOnClickListener { }
 
     }
 }

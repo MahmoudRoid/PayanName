@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat
 import android.widget.Toast
 import ir.mahmoud.payanname.Classes.Algorithm
 import ir.mahmoud.payanname.Classes.Constants
+import ir.mahmoud.payanname.Classes.NewAlgorithm
 import ir.mahmoud.payanname.R
 
 class AlgorithmService : Service() {
@@ -49,15 +50,16 @@ class AlgorithmService : Service() {
 
         showNotification()
         // Start foreground service.
-        startForeground(1, notification)
+        startForeground(2, notification)
         start()
     }
 
     private fun start() {
 
         Thread(Runnable {
+            val newAlgorithm = NewAlgorithm()
             while ( !isStopped ){
-                Algorithm.getInstance().checkAlgorithmWithConsidrationHistory()
+                newAlgorithm.checkAlgorithmWithConsidrationHistory()
                 Thread.sleep(Constants.getInstance().algorithmServiceIntervalTime)
             }
         }).start()

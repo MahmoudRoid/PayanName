@@ -2,10 +2,6 @@ package ir.mahmoud.payanname.Model;
 
 import io.realm.RealmObject;
 
-/**
- * Created by soheilsystem on 3/6/2018.
- */
-
 public class Model extends RealmObject {
 
     private int cpuOneFreq,cpuTwoFreq,cpuThreeFreq,cpuFourFreq;

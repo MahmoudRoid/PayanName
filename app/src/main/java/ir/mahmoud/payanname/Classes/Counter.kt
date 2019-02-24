@@ -43,8 +43,7 @@ class Counter(var count:Int = 8 , var language:Language = Language.C) {
             Language.Java -> return  Java.getInstance().getResult()
         }
     }
-
-
+   
     /////////////////////  Kotlin  //////////////////////////////////
 
     fun kotlin_start(){

@@ -57,7 +57,7 @@ class CounterService : Service() {
     private fun startForegroundService() {
         showNotification()
         // Start foreground service.
-        startForeground(1, notification)
+        startForeground(3, notification)
         start()
     }
 
