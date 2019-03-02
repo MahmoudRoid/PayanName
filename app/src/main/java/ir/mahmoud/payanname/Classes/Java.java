@@ -1,5 +1,7 @@
 package ir.mahmoud.payanname.Classes;
 
+import android.os.Handler;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -153,6 +155,20 @@ public class Java {
                     list.set(7, list.get(7)+1 );
             }
         });
+    }
+
+
+    void x(){
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("as");
+            }
+        },5000);
+
+
     }
 
 

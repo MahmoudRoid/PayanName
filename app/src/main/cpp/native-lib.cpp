@@ -5,7 +5,7 @@
 
 static bool isOk = false;
 pthread_t threads[20];
-static long resultArray[20];
+static double resultArray[20];
 static int threadCounts ;
 
 /////////////////////////////////

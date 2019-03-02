@@ -1,18 +1,16 @@
 package ir.mahmoud.payanname.Activity
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
-import io.realm.Realm
 import ir.mahmoud.payanname.Classes.JavaUtils
-import ir.mahmoud.payanname.Classes.NewAlgorithm
 import ir.mahmoud.payanname.Enum.Language
-import ir.mahmoud.payanname.Model.Model
 import ir.mahmoud.payanname.R
 import ir.mahmoud.payanname.Service.AlgorithmService
 import ir.mahmoud.payanname.Service.CollectDataService
@@ -25,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var root: Process
     var count = 8
     val language: Language = Language.C
-    var  test = NewAlgorithm()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,13 +83,21 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
-
         start_btn_counter.setOnClickListener {
             val intent = Intent(this, CounterService::class.java)
             intent.action = CounterService.ACTION_START_FOREGROUND_SERVICE
             intent.putExtra("threadCount",counter_edt.text.toString().toInt())
             intent.putExtra("Language",language.toString())
             startService(intent)
+
+            // stop after 1 min
+    /*        Handler().postDelayed( {
+                val intent = Intent(this, CounterService::class.java)
+                intent.action = CounterService.ACTION_STOP_FOREGROUND_SERVICE
+                startService(intent)
+                Toast.makeText(this,"ended",Toast.LENGTH_SHORT).show()
+            }, 1000 * 10)*/
+
         }
         stop_btn_counter.setOnClickListener {
             val intent = Intent(this, CounterService::class.java)
@@ -100,14 +105,34 @@ class MainActivity : AppCompatActivity() {
             startService(intent)
         }
         get_data_btn_counter.setOnClickListener {
-            result_txt.text = CounterService.result
+
+
+            var liissst: MutableList<String> = CounterService.result.split("\n").map { it -> it.trim() }.toMutableList()
+            var sum = 0f
+            for(i in liissst){
+                if (i != "")
+                    sum += i.toFloat()
+            }
+
+            sum /= counter_edt.text.toString().toInt()
+
+            result_txt.text = CounterService.result + "sum is $sum"
+
         }
 
         //////  test cores
         btn_core_0.setOnClickListener { }
         btn_core_1.setOnClickListener { }
         btn_core_2.setOnClickListener { }
-        btn_core_3.setOnClickListener { }
+        btn_core_3.setOnClickListener {
+
+            Handler().postDelayed( {
+                Toast.makeText(this,"test",Toast.LENGTH_SHORT).show()
+            }, 4000)
+
+        }
+
+
 
     }
 }
