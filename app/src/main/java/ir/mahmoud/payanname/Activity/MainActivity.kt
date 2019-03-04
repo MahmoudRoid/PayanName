@@ -50,9 +50,12 @@ class MainActivity : AppCompatActivity() {
             startService(intent)
         }
         stop_btn_collect_data.setOnClickListener {
-            val intent = Intent(this, CollectDataService::class.java)
-            intent.action = CollectDataService.ACTION_STOP_FOREGROUND_SERVICE
-            startService(intent)
+            try {
+                val intent = Intent(this, CollectDataService::class.java)
+                intent.action = CollectDataService.ACTION_STOP_FOREGROUND_SERVICE
+                startService(intent)
+            } catch (e: Exception) {
+            }
         }
         ////// algorithm
         start_btn_algorithm.setOnClickListener {
@@ -61,9 +64,12 @@ class MainActivity : AppCompatActivity() {
             startService(intent)
         }
         stop_btn_algorithm.setOnClickListener {
-            val intent = Intent(this, AlgorithmService::class.java)
-            intent.action = AlgorithmService.ACTION_STOP_FOREGROUND_SERVICE
-            startService(intent)
+            try {
+                val intent = Intent(this, AlgorithmService::class.java)
+                intent.action = AlgorithmService.ACTION_STOP_FOREGROUND_SERVICE
+                startService(intent)
+            } catch (e: Exception) {
+            }
         }
         ////// counter
         counter_edt.setText(count.toString())
@@ -90,19 +96,24 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Language",language.toString())
             startService(intent)
 
-            // stop after 1 min
-    /*        Handler().postDelayed( {
-                val intent = Intent(this, CounterService::class.java)
-                intent.action = CounterService.ACTION_STOP_FOREGROUND_SERVICE
-                startService(intent)
-                Toast.makeText(this,"ended",Toast.LENGTH_SHORT).show()
-            }, 1000 * 10)*/
+            try {// stop after 5 min
+                Handler().postDelayed( {
+                    val intent = Intent(this, CounterService::class.java)
+                    intent.action = CounterService.ACTION_STOP_FOREGROUND_SERVICE
+                    startService(intent)
+                    Toast.makeText(this,"ended",Toast.LENGTH_SHORT).show()
+                }, 1000 * 60 * 5)
+            } catch (e: Exception) {
+            }
 
         }
         stop_btn_counter.setOnClickListener {
-            val intent = Intent(this, CounterService::class.java)
-            intent.action = CounterService.ACTION_STOP_FOREGROUND_SERVICE
-            startService(intent)
+            try {
+                val intent = Intent(this, CounterService::class.java)
+                intent.action = CounterService.ACTION_STOP_FOREGROUND_SERVICE
+                startService(intent)
+            } catch (e: Exception) {
+            }
         }
         get_data_btn_counter.setOnClickListener {
 
@@ -124,15 +135,6 @@ class MainActivity : AppCompatActivity() {
         btn_core_0.setOnClickListener { }
         btn_core_1.setOnClickListener { }
         btn_core_2.setOnClickListener { }
-        btn_core_3.setOnClickListener {
-
-            Handler().postDelayed( {
-                Toast.makeText(this,"test",Toast.LENGTH_SHORT).show()
-            }, 4000)
-
-        }
-
-
-
+        btn_core_3.setOnClickListener { }
     }
 }
