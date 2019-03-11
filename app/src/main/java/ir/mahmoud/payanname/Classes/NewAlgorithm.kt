@@ -12,11 +12,8 @@ class NewAlgorithm {
 
     var normalStatus = true
     var isOk: Boolean = false
+    var process :Process? = null
 
-   init{
-        // set governor for core 0
-        setGovernor_Core_0()
-    }
 
     //////////////////////////////////////////////
 
@@ -40,9 +37,11 @@ class NewAlgorithm {
 
     }
     fun setCurrentFreq(coreNumber: Int = 0 , frequency: String) {
-        val fileName = "/sys/devices/system/cpu/cpu$coreNumber/cpufreq/scaling_setspeed"
-        Runtime.getRuntime().exec(arrayOf("su", "-c", "echo $frequency > $fileName"))
-        // todo set for min and max freq
+        Thread(Runnable {
+            val fileName = "/sys/devices/system/cpu/cpu$coreNumber/cpufreq/scaling_setspeed"
+            process = Runtime.getRuntime().exec(arrayOf("su", "-c", "echo $frequency > $fileName"))
+            process!!.inputStream
+        })
     }
     fun setCurrentFreq(frequency: String) {
         // all of the cores
@@ -51,6 +50,46 @@ class NewAlgorithm {
             Runtime.getRuntime().exec(arrayOf("su", "-c", "echo $frequency > $fileName"))
         }
         // todo set for min and max freq
+    }
+    fun setCurrentFreqUsingFS(first:String,second:String,third:String,fourth:String){
+
+        when(first.toUpperCase()){
+            "A" -> setCurrentFreq(0 , Constants.getInstance().freq_A)
+            "B" -> setCurrentFreq(0 , Constants.getInstance().freq_B)
+            "C" -> setCurrentFreq(0 , Constants.getInstance().freq_C)
+            "D" -> setCurrentFreq(0 , Constants.getInstance().freq_D)
+            "E" -> setCurrentFreq(0 , Constants.getInstance().freq_E)
+            "F" -> setCurrentFreq(0 , Constants.getInstance().freq_F)
+        }
+
+        when(second.toUpperCase()){
+            "A" -> setCurrentFreq(1 , Constants.getInstance().freq_A)
+            "B" -> setCurrentFreq(1 , Constants.getInstance().freq_B)
+            "C" -> setCurrentFreq(1 , Constants.getInstance().freq_C)
+            "D" -> setCurrentFreq(1 , Constants.getInstance().freq_D)
+            "E" -> setCurrentFreq(1 , Constants.getInstance().freq_E)
+            "F" -> setCurrentFreq(1 , Constants.getInstance().freq_F)
+        }
+
+        when(third.toUpperCase()){
+            "A" -> setCurrentFreq(2 , Constants.getInstance().freq_A)
+            "B" -> setCurrentFreq(2 , Constants.getInstance().freq_B)
+            "C" -> setCurrentFreq(2 , Constants.getInstance().freq_C)
+            "D" -> setCurrentFreq(2 , Constants.getInstance().freq_D)
+            "E" -> setCurrentFreq(2 , Constants.getInstance().freq_E)
+            "F" -> setCurrentFreq(2 , Constants.getInstance().freq_F)
+        }
+
+        when(fourth.toUpperCase()){
+            "A" -> setCurrentFreq(3 , Constants.getInstance().freq_A)
+            "B" -> setCurrentFreq(3 , Constants.getInstance().freq_B)
+            "C" -> setCurrentFreq(3 , Constants.getInstance().freq_C)
+            "D" -> setCurrentFreq(3 , Constants.getInstance().freq_D)
+            "E" -> setCurrentFreq(3 , Constants.getInstance().freq_E)
+            "F" -> setCurrentFreq(3 , Constants.getInstance().freq_F)
+        }
+
+
     }
     private fun setCore(coreNumber: Int, value: Boolean) {
         val fileName = "/sys/devices/system/cpu/cpu$coreNumber/online"
@@ -92,6 +131,107 @@ class NewAlgorithm {
 
     /////////////////////////////////////////////////////////////
 
+    fun checkAlgorithmWithConsidrationHistory_Temp() {
+        var cpuUasge = -1
+        var temperuture = Constants.getInstance().min_temp
+
+        temperuture = java.lang.Double.parseDouble(JavaUtils.getInstance().cpuTemperature_Xperia)
+        cpuUasge = JavaUtils.getInstance().cpuUsage
+
+        if (temperuture > Constants.getInstance().max_threshold_temp || !normalStatus) {
+            // bayad be paeen tarin sath beresanim
+            // FFDD
+            setCurrentFreqUsingFS("F","F","D","D")
+
+            // ta zamani ke damaye cpu zire in damaye  Constants.tmp_temperature  nayamade dar in halat bemanad
+            normalStatus = false
+            if (temperuture <= Constants.getInstance().tmp_temperature) normalStatus = true
+        }
+
+        else{
+
+            // u >= 98
+            if (cpuUasge >= Constants.getInstance().cpu_usage_12){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","F","F")
+                }
+            }
+            // 96 <= u < 98
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_11) && (cpuUasge < Constants.getInstance().cpu_usage_12)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","F","E")
+                }
+            }
+            // 94 <= u < 96
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_10) && (cpuUasge < Constants.getInstance().cpu_usage_11)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","F","D")
+                }
+            }
+            // 90 <= u < 94
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_9) && (cpuUasge < Constants.getInstance().cpu_usage_10)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","F","C")
+                }
+            }
+            // 85 <= u < 90
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_8) && (cpuUasge < Constants.getInstance().cpu_usage_9)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","F","B")
+                }
+            }
+            // 80 <= u < 85
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_7) && (cpuUasge < Constants.getInstance().cpu_usage_8)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","F","A")
+                }
+            }
+            // 75 <= u < 80
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_6) && (cpuUasge < Constants.getInstance().cpu_usage_7)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","E","E")
+                }
+            }
+            // 70 <= u < 75
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_5) && (cpuUasge < Constants.getInstance().cpu_usage_6)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","E","B")
+                }
+            }
+            // 65 <= u < 70
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_4) && (cpuUasge < Constants.getInstance().cpu_usage_5)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","D","C")
+                }
+            }
+            // 60 <= u < 65
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_3) && (cpuUasge < Constants.getInstance().cpu_usage_4)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","C","A")
+                }
+            }
+            // 55 <= u < 60
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_2) && (cpuUasge < Constants.getInstance().cpu_usage_3)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","B","B")
+                }
+            }
+            // 50 <= u < 55
+            if ( (cpuUasge >= Constants.getInstance().cpu_usage_1) && (cpuUasge < Constants.getInstance().cpu_usage_2)){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","B","A")
+                }
+            }
+            // u < 50
+            if (cpuUasge >= Constants.getInstance().cpu_usage_1){
+                if (checkHistory(Constants.getInstance().frequencies[0], 0)) {
+                    setCurrentFreqUsingFS("F","F","A","A")
+                }
+            }
+
+        }
+
+    }
 
     fun checkAlgorithmWithConsidrationHistory() {
         var cpuUasge = -1
@@ -226,7 +366,7 @@ class NewAlgorithm {
     }
 
     private fun checkHistory(newFreq: String, newCores: Int): Boolean {
-        // newCore  =>  0 means core0
+/*        // newCore  =>  0 means core0
         //          =>  1 means core0 & core1
         //          =>  2 means core0 & core1 & core2
         //          =>  3 means core0 & core1 & core2 & core3
@@ -256,7 +396,8 @@ class NewAlgorithm {
             }
         }
 
-        return isOk
+        return isOk*/
+        return true
     }
 
     fun checkConditions(list: List<Model>, newCores: Int): Boolean {
@@ -270,11 +411,7 @@ class NewAlgorithm {
     }
 
     private fun workTimePass(count: Int): Boolean {
-        // todo : inja return ha dorost shavad
-        return if (count * Constants.getInstance().serviceIntervalTime < Constants.getInstance().workTimeAverage)
-            false
-        else
-            false
+        return  (count * Constants.getInstance().serviceIntervalTime >= Constants.getInstance().workTimeAverage)
     }
 
     private fun temperaturePass(newCores: Int, maxTemperature: Float): Boolean {
@@ -294,20 +431,5 @@ class NewAlgorithm {
         }
         return false
     }
-
-    fun xxx(context: Context) {
-
-//        var list : MutableList<Model>
-        val myRealm = Realm.getDefaultInstance()
-        myRealm.executeTransaction { realm ->
-            val result = realm.where(Model::class.java).findAll()
-            val list = realm.copyFromRealm(result)
-            Toast.makeText(context , list[0].cpuTemperature.toString() , Toast.LENGTH_SHORT).show()
-        }
-
-
-
-    }
-
 
 }

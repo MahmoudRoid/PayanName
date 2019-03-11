@@ -59,7 +59,7 @@ class AlgorithmService : Service() {
         Thread(Runnable {
             val newAlgorithm = NewAlgorithm()
             while ( !isStopped ){
-                newAlgorithm.checkAlgorithmWithConsidrationHistory()
+                newAlgorithm.checkAlgorithmWithConsidrationHistory_Temp()
                 Thread.sleep(Constants.getInstance().algorithmServiceIntervalTime)
             }
         }).start()

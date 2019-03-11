@@ -59,17 +59,17 @@ class MainActivity : AppCompatActivity() {
         }
         ////// algorithm
         start_btn_algorithm.setOnClickListener {
-            val intent = Intent(this, AlgorithmService::class.java)
-            intent.action = AlgorithmService.ACTION_START_FOREGROUND_SERVICE
-            startService(intent)
+                        val intent = Intent(this, AlgorithmService::class.java)
+                        intent.action = AlgorithmService.ACTION_START_FOREGROUND_SERVICE
+                        startService(intent)
         }
         stop_btn_algorithm.setOnClickListener {
-            try {
-                val intent = Intent(this, AlgorithmService::class.java)
-                intent.action = AlgorithmService.ACTION_STOP_FOREGROUND_SERVICE
-                startService(intent)
-            } catch (e: Exception) {
-            }
+              try {
+                   val intent = Intent(this, AlgorithmService::class.java)
+                   intent.action = AlgorithmService.ACTION_STOP_FOREGROUND_SERVICE
+                   startService(intent)
+               } catch (e: Exception) {
+               }
         }
         ////// counter
         counter_edt.setText(count.toString())
@@ -96,15 +96,15 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("Language",language.toString())
             startService(intent)
 
-            try {// stop after 5 min
-                Handler().postDelayed( {
-                    val intent = Intent(this, CounterService::class.java)
-                    intent.action = CounterService.ACTION_STOP_FOREGROUND_SERVICE
-                    startService(intent)
-                    Toast.makeText(this,"ended",Toast.LENGTH_SHORT).show()
-                }, 1000 * 60 * 5)
-            } catch (e: Exception) {
-            }
+                try {// stop after 5 min
+                    Handler().postDelayed( {
+                        val intent = Intent(this, CounterService::class.java)
+                        intent.action = CounterService.ACTION_STOP_FOREGROUND_SERVICE
+                        startService(intent)
+                        Toast.makeText(this,"ended",Toast.LENGTH_SHORT).show()
+                    }, 1000 * 60 * 5)
+                } catch (e: Exception) {
+                }
 
         }
         stop_btn_counter.setOnClickListener {
@@ -132,9 +132,46 @@ class MainActivity : AppCompatActivity() {
         }
 
         //////  test cores
-        btn_core_0.setOnClickListener { }
-        btn_core_1.setOnClickListener { }
-        btn_core_2.setOnClickListener { }
-        btn_core_3.setOnClickListener { }
+        btn_core_0.setOnClickListener {
+            setCurrentFreq(counter_edt.text.toString(),0)
+        }
+        btn_core_1.setOnClickListener {
+            setCurrentFreq(counter_edt.text.toString(),1)
+        }
+        btn_core_2.setOnClickListener {
+            setCurrentFreq(counter_edt.text.toString(),2)
+        }
+        btn_core_3.setOnClickListener {
+            setCurrentFreq(counter_edt.text.toString(),3)
+        }
+
     }
+
+    fun setCore(coreNumber: Int, value: Boolean) {
+        val fileName = "/sys/devices/system/cpu/cpu$coreNumber/online"
+        val governor = "/sys/devices/system/cpu/cpu$coreNumber/cpufreq/scaling_governor"
+        val one = """"1""""
+        val zero = """"0""""
+
+        if (value){
+            // set core on
+            Runtime.getRuntime().exec(arrayOf("su", "-c", "echo $one> $fileName "))
+            // set userspace
+            Runtime.getRuntime().exec(arrayOf("su", "-c", "echo userspace> $governor "))
+        }
+        else{
+            Runtime.getRuntime().exec(arrayOf("su", "-c", "echo ondemand> $governor "))
+            Runtime.getRuntime().exec(arrayOf("su", "-c", "echo $zero> $fileName "))
+        }
+    }
+
+    fun setCurrentFreq(frequency: String, core:Int) {
+        // all of the cores
+        val fileName = "/sys/devices/system/cpu/cpu$core/cpufreq/scaling_setspeed"
+        Runtime.getRuntime().exec(arrayOf("su", "-c", "echo $frequency > $fileName"))
+    }
+
+
+
+
 }
