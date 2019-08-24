@@ -6,10 +6,8 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.IBinder
-import android.support.v4.app.NotificationCompat
 import android.widget.Toast
-import ir.mahmoud.payanname.Classes.Algorithm
-import ir.mahmoud.payanname.Classes.Constants
+import androidx.core.app.NotificationCompat
 import ir.mahmoud.payanname.Classes.Counter
 import ir.mahmoud.payanname.Enum.Language
 import ir.mahmoud.payanname.R
@@ -35,8 +33,8 @@ class CounterService : Service() {
 
         if (intent != null){
             if (intent.extras != null){
-                threadNumbers = intent.extras.getInt("threadCount")
-                language = Language.valueOf(intent.extras.getString("Language"))
+                threadNumbers = intent.extras!!.getInt("threadCount")
+                language = Language.valueOf(intent.extras!!.getString("Language")!!)
                 counter = Counter(threadNumbers,language)
             }
             val action = intent.action

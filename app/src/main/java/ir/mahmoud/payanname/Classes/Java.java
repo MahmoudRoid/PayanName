@@ -157,19 +157,4 @@ public class Java {
         });
     }
 
-
-    void x(){
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("as");
-            }
-        },5000);
-
-
-    }
-
-
 }

@@ -39,7 +39,7 @@ class Counter(var count:Int = 8 , var language:Language = Language.C) {
     fun getData():String{
         when(language){
             Language.Kotlin -> return kotlinResult
-            Language.C -> return intFromJNI()
+            Language.C -> return stringFromJNI()
             Language.Java -> return  Java.getInstance().getResult()
         }
     }
@@ -155,7 +155,6 @@ class Counter(var count:Int = 8 , var language:Language = Language.C) {
 
     ///////////////////////////////////////////////////////////////////////////////////
     external fun stringFromJNI(): String
-    external fun intFromJNI(): String
     external fun createThread(threadCount:Int)
     external fun stopThread()
 

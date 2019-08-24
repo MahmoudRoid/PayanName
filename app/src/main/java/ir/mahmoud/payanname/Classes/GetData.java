@@ -28,7 +28,7 @@ public class GetData {
         saveToDB();
     }
 
-    public void getSystemFilesData(){
+    private void getSystemFilesData(){
         // cpu_freq1="x"|cpu_freq2="x"|cpu_load="x"|cpu_temp="x"
 
         this.Cpu1Freq = JavaUtils.getInstance().getScalingCpuFreq(0);
@@ -37,7 +37,6 @@ public class GetData {
         this.Cpu4Freq = JavaUtils.getInstance().getScalingCpuFreq(3);
         this.CpuLoad = JavaUtils.getInstance().getCpuLoad()[0];
         this.CpuUsage = String.valueOf(JavaUtils.getInstance().getCpuUsage());
-//        this.CpuTemperature = JavaUtils.getInstance().getCpuTemperature_Sony();
         this.CpuTemperature = JavaUtils.getInstance().getCpuTemperature_Xperia();
 
         text = "cpu_freq1="+Cpu1Freq
@@ -50,7 +49,7 @@ public class GetData {
 
     }
 
-    public void writeToFile(String text){
+    private void writeToFile(String text){
         File file = new File(MyApplication.DataFile);
         try {
             FileWriter writer = new FileWriter(file,true);
@@ -97,4 +96,5 @@ public class GetData {
         }
 
     }
+
 }

@@ -12,7 +12,7 @@ static int threadCounts ;
 
 void *count_all(void *id){
 
-    int tid = (int)id;
+    int tid = (int)(size_t)id;
     resultArray[tid] = 0;
 
     while(true){
@@ -24,7 +24,7 @@ void *count_all(void *id){
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_ir_mahmoud_payanname_Classes_Counter_intFromJNI(
+Java_ir_mahmoud_payanname_Classes_Counter_stringFromJNI(
         JNIEnv* env,
         jobject /* this */) {
 
@@ -35,16 +35,6 @@ Java_ir_mahmoud_payanname_Classes_Counter_intFromJNI(
 
     return env->NewStringUTF(result.c_str());
 }
-
-extern "C" JNIEXPORT jstring JNICALL
-Java_ir_mahmoud_payanname_Classes_Counter_stringFromJNI(
-        JNIEnv* env,
-        jobject /* this */) {
-    std::string result = std::to_string(resultArray[0]) ;
-    return env->NewStringUTF(result.c_str());
-}
-
-
 
 
 extern "C" JNIEXPORT void JNICALL

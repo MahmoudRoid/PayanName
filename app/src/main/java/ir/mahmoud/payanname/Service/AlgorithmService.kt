@@ -6,11 +6,10 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.IBinder
-import android.support.v4.app.NotificationCompat
 import android.widget.Toast
-import ir.mahmoud.payanname.Classes.Algorithm
+import androidx.core.app.NotificationCompat
 import ir.mahmoud.payanname.Classes.Constants
-import ir.mahmoud.payanname.Classes.NewAlgorithm
+import ir.mahmoud.payanname.Classes.AlgorithmClass
 import ir.mahmoud.payanname.R
 
 class AlgorithmService : Service() {
@@ -57,10 +56,10 @@ class AlgorithmService : Service() {
     private fun start() {
 
         Thread(Runnable {
-            val newAlgorithm = NewAlgorithm()
+            val newAlgorithm = AlgorithmClass()
             while ( !isStopped ){
-                newAlgorithm.checkAlgorithmWithConsidrationHistory_Temp()
-                Thread.sleep(Constants.getInstance().algorithmServiceIntervalTime)
+                newAlgorithm.checkAlgorithmWithConsidrationHistory()
+                Thread.sleep(Constants.algorithmServiceIntervalTime)
             }
         }).start()
     }

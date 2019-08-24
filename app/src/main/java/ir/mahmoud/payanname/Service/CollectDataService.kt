@@ -6,8 +6,8 @@ import android.app.Service
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.IBinder
-import android.support.v4.app.NotificationCompat
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import ir.mahmoud.payanname.Classes.Constants
 import ir.mahmoud.payanname.Classes.GetData
 import ir.mahmoud.payanname.R
@@ -58,7 +58,7 @@ class CollectDataService : Service() {
         Thread(Runnable {
             while ( !isStopped ){
                 GetData.getInstance().saveData()
-                Thread.sleep(Constants.getInstance().collectDataServiceIntervalTime)
+                Thread.sleep(Constants.collectDataServiceIntervalTime)
             }
         }).start()
     }
