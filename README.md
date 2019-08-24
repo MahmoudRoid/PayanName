@@ -4,7 +4,7 @@
 
 ### CyanogenMod
 
-To have a full controll on Sony Xperia Z , Installig custom rom like CyanogenMod is required.
+To have a full controll on smartphone, Installig custom rom like CyanogenMod is required.
 Installation Instructions :
 
 1) Download your proper version of CyanogenMod ( ROM )
