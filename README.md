@@ -23,14 +23,14 @@ After reboot go to Setting -> Developer Options -> toggle on root option.
 First of all, this project was written in Java as Primary android programing language. Following Google's official support of Kotlin's 	programming language, the algorithm was overwritten with this new language.
 Since the Algorithm works with linux kernel and casue of C++ programming language speed, the algorithm was overwritten again.
 Speed of C++ helped us to achieve better performance and have a great results at benchmarks.
-In order to use C++ as android developing language, NDK which is a tool for compiling the codes to run on adnroid OS, is required. Another tools that should be downloaded in SDK are CMAKE and LLDB. Next step is configuring gradle. add the following code to your gradle.
+In order to use C++ as android developing language, NDK which is a tool for compiling the codes to run on adnroid OS, is required. Another tools that should be downloaded in SDK are CMAKE and LLDB. Next step is configuring gradle. add the following code into your gradle.
 
 cmake {
 cppFlags ""
-arguments "-DANDROID_STL=c++_static"
-}
+            arguments "-DANDROID_STL=c++_static"
+            }
 
-You can use C++ in yout application now.
+You can use C++ in your application now.
             
             
 
