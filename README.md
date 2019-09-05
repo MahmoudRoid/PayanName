@@ -31,6 +31,13 @@ cppFlags ""
             }
 
 You can use C++ in your application now.
+
+## Challenges
+### Cpu Temperature
+There are different paths to achieve cpu temperature.
+
+
+### Cpu Utilization
             
             
 
