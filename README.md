@@ -34,8 +34,11 @@ You can use C++ in your application now.
 
 ## Challenges
 ### Cpu Temperature
-There are different paths to achieve cpu temperature.
+There are different paths to achieve cpu temperature:
 
+1) cat sys/class/thermal/thermal_zone0/temp
+2) cat sys/devices/virtual/thermal/thermal_zone0/temp
+3) cat sys/class/hwmon/hwmonX/temp1_input
 
 ### Cpu Utilization
             
