@@ -42,11 +42,11 @@ There are different system files to achieve cpu temperature:
 
 You should notice that which thermal zone is relevant to temperature of cpu. so yoy should read all thermal_zones type. The paths is shown blow.
 
-sys/class/thermal/thermal_zone0/type
-sys/class/thermal/thermal_zone1/type
-sys/class/thermal/thermal_zone2/type
-.............
-.............
+1) sys/class/thermal/thermal_zone0/type
+2) sys/class/thermal/thermal_zone1/type
+3) sys/class/thermal/thermal_zone2/type
+4) .............
+5) .............
 
 
 ### Cpu Utilization
