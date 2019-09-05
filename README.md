@@ -33,6 +33,9 @@ cppFlags ""
 You can use C++ in your application now.
 
 ## Challenges
+### Disable Thermal Management
+There is a system file that you can configure Thermal Management setting, based on CyanogenMod kernel. As I used CyanogenMod 13.1 in Sony Xperia Z , the system file path was " /sys/module/msm_thermal/core_controll/enabled ". echo 0 to turn off and 1 to turn on the setting.
+
 ### Cpu Temperature
 There are different system files to achieve cpu temperature:
 
@@ -50,6 +53,7 @@ You should notice that which thermal zone is relevant to temperature of cpu. so 
 
 
 ### Cpu Utilization
+There are some ways to get cpu utilization. In this project the solution was running "top -m 1000 -n 1 -d 1" command in shell and calculate cpu usage via aggregate amounts in first line of result.
             
             
 
